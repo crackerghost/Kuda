@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+    --bgColor-- : #E6F0FF;
+    --btnColor-- : #0F1B4C;
+}
+
+body{
+    @apply bg-[--bgColor--]
+    
+}
+
+.Seller{
+    @apply -translate-x-[100%]
+}
+
+.inner-container{
+    @apply w-[90%] h-[45%] flex justify-between;
+}
+
+.first,.second{
+    @apply flex flex-col justify-evenly w-[33.33%]
+}
+.containers{
+    @apply w-full h-[100vh] flex flex-col items-center justify-center
+}
