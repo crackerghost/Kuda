@@ -11,7 +11,7 @@ function App() {
     const checkLoad = ()=>{
       setTimeout(() => {
         setLoader(true);
-      },1000);
+      },2000);
       
     }
     
