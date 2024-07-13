@@ -7,7 +7,7 @@ function Location() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post('/location', {
+      const response = await axios.post('https://kuda-three.vercel.app/location', {
         email: 'raj123@gmail.com',
         long: long,
         lat: lat

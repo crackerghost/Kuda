@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const connection = require("mysql2");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const secretKey = "rajsingh123@";
