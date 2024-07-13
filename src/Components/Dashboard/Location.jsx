@@ -6,7 +6,7 @@ function Location() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/updatelocation', {
+      const response = await fetch('https://kuda-three.vercel.app:3000/updatelocation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
