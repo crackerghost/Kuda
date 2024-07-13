@@ -11,21 +11,21 @@ import Navbar from "./Components/Common/Navbar";
 import Dashboard from "./Components/Dashboard/Dashboard";
 
 function App() {
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
 
-  useEffect(() => {
-    const checkLoad = () => {
-      setTimeout(() => {
-        setLoader(true);
-      }, 1000);
-    };
+  // useEffect(() => {
+  //   const checkLoad = () => {
+  //     setTimeout(() => {
+  //       setLoader(true);
+  //     }, 1000);
+  //   };
 
-    window.addEventListener("load", checkLoad);
+  //   window.addEventListener("load", checkLoad);
 
-    return () => {
-      window.removeEventListener("load", checkLoad);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("load", checkLoad);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // const location = useLocation();
