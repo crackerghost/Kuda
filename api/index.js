@@ -11,7 +11,15 @@ const bodyParser = require('body-parser');
 app.use(express.json());
 
 app.use(bodyParser.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://kuda-three.vercel.app/',
+  methods: ['GET', 'POST'], // Add other methods if needed
+  allowedHeaders: ['Content-Type', 'Authorization'], // Adjust headers as per your requirements
+};
+
+app.use(cors(corsOptions));
+
 
 app.use(express.static(path.join(__dirname, "../dist")));
 connectToDatabase();
