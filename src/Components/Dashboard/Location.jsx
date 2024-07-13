@@ -12,7 +12,7 @@ function Location() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: 'raj123@gmail.com',
+          email: localStorage.getItem("email"),
           long,
           lat,
         }),

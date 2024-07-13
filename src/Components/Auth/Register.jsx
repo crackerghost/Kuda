@@ -27,6 +27,7 @@ function Register() {
 
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
         toast.success("Register Success!", {
           position: "top-center",
           autoClose: 1000,

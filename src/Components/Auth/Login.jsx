@@ -19,6 +19,7 @@ function Login() {
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 1000,
