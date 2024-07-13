@@ -4,12 +4,12 @@ const bcrypt = require("bcrypt");
 const regSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
+        required: false,
         unique: true,
       },
       password: {
         type: String,
-        required: true,
+        required: false,
       },
    name : {
     type : String,
@@ -25,11 +25,27 @@ const regSchema = new mongoose.Schema({
     type : String,
     required : false
 
-   }
+   },
+   type:{
+    type : String,
+    required : false
+   },
+   location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: false
+    },
+    coordinates: {
+      type: [Number],
+      required: false
+    }
+  }
+   
 
 });
 
-
+regSchema.index({ location: '2dsphere' });
 
 const regModel = mongoose.model("Wastewise", regSchema);
 

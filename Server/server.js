@@ -12,10 +12,6 @@ const regModel = require('./Models/regModel'); // Import RegModel
 
 connectToDatabase();
 app.use(express.json());
-
-
-
-
 app.use(express.static(path.join(__dirname, "../dist")));
 app.post('/verifyLogin', async (req, res) => {
   const { email, pass } = req.body;
@@ -29,7 +25,7 @@ app.post('/verifyLogin', async (req, res) => {
       if (isMatch) {
         const token = jwt.sign({ email: user.email }, secretKey, { expiresIn: '1h' });
         console.log(token);
-        return res.status(200).send({ data: 'Login Success', token });
+        return res.status(200).send({ data: 'Login Success', token , email});
       } else {
         return res.status(400).send({ data: 'Password Incorrect' });
       }
@@ -41,8 +37,26 @@ app.post('/verifyLogin', async (req, res) => {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
 });
+
+app.post('/location', async (req, res) => {
+  const { userId, latitude, longitude } = req.body;
+
+  const user = await regModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  user.location = {
+    type: 'Point',
+    coordinates: [longitude, latitude]
+  };
+
+  await user.save();
+  res.status(201).json(user);
+});
+
 app.post("/register", async (req, res) => {
-  const { email, name, pass, kyc,role } = req.body;
+  const { email, name, pass, kyc,role ,type} = req.body;
 
   try {
     // Check if user with the same email already exists
@@ -61,6 +75,7 @@ app.post("/register", async (req, res) => {
       password: hashedPass,
       kyc,
       role,
+      type,
     });
 
     // Save the user to the database
@@ -70,7 +85,7 @@ app.post("/register", async (req, res) => {
     const token = jwt.sign({ email: newUser.email }, secretKey, { expiresIn: "1h" });
 
     // Respond with success message and token
-    res.status(201).json({ message: "User registered successfully", token });
+    res.status(201).json({ message: "User registered successfully", token , email });
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -113,5 +128,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("listening on port 5000");
+  console.log("listening on port 3000");
 });
