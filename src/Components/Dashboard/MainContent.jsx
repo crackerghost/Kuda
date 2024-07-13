@@ -13,7 +13,7 @@ return (
   <div className="bg-white p-4 rounded-2xl shadow-md flex-1 min-w-[calc(33.333%-16px)] min-h-[calc(25%-10px)] mb-2 gap-2">
     <div className="h-44 bg-gray-200 rounded-2xl mb-4"></div>
     <h3 className="text-lg font-semibold">{type}</h3>
-    <p className="text-blue-500 mt-1">₹{averagePrice}</p>
+    <p className="text-blue-500 mt-1">₹{averagePrice}  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">Avg/Kg</span></p>
     <div className='flex mt-2'>
       <span className="material-symbols-outlined">location_on</span>
       <a href={`https://maps.google.com/?q=${location}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 ml-2 hover:underline">{location}</a>
