@@ -38,21 +38,28 @@ app.post('/verifyLogin', async (req, res) => {
   }
 });
 
+
 app.post('/location', async (req, res) => {
-  const { email, long, lat } = req.body;
+  const { email,long,lat } = req.body;
 
-  const user = await regModel.findById(email);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
+  try {
+    const user = await regModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.location = {
+      type: 'Point',
+      coordinates: [long, lat]
+    };
+
+    await user.save();
+    res.status(201).json(user);
+  } catch (error) {
+    console.error('Error saving location:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  user.location = {
-    type: 'Point',
-    coordinates: [long, lat]
-  };
-
-  await user.save();
-  res.status(201).json(user);
 });
 
 
