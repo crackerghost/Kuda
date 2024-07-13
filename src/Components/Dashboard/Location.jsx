@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Location() {
   const [long, setLong] = useState(0);
@@ -7,12 +6,24 @@ function Location() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post('/updatelocation', {
-        email: 'raj123@gmail.com',
-        long,
-        lat
+      const response = await fetch('/updatelocation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'raj123@gmail.com',
+          long,
+          lat,
+        }),
       });
-      console.log('Location saved:', response.data);
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Location saved:', data);
     } catch (error) {
       console.error('Error saving location:', error);
     }
@@ -35,7 +46,7 @@ function Location() {
   };
 
   // useEffect to call fetchData when long and lat change
-  React.useEffect(() => {
+  useEffect(() => {
     if (long !== 0 && lat !== 0) {
       fetchData();
     }
