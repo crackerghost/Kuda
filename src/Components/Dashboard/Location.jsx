@@ -9,8 +9,8 @@ function Location() {
     try {
       const response = await axios.post('/location', {
         email: 'raj123@gmail.com',
-        long: long,
-        lat: lat
+        long:  2.3522,
+        lat: 48.8566
       });
       console.log('Location saved:', response.data);
     } catch (error) {
