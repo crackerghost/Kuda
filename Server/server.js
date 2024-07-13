@@ -39,7 +39,7 @@ app.post('/verifyLogin', async (req, res) => {
 });
 
 app.post('/location', async (req, res) => {
-  const { email, lat, long } = req.body;
+  const { email, long, lat } = req.body;
 
   const user = await regModel.findById(email);
   if (!user) {
@@ -54,6 +54,8 @@ app.post('/location', async (req, res) => {
   await user.save();
   res.status(201).json(user);
 });
+
+
 
 app.post("/register", async (req, res) => {
   const { email, name, pass, kyc,role ,type} = req.body;
