@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./Components/Common/Navbar";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import RagPickerCart from "./Components/Cart/RagPicker";
+import BuyDash from "./Components/Buyerdash/Dashboard";
 
 function App() {
   const [loader, setLoader] = useState(true);
@@ -81,6 +83,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Dashboard />} />
+        <Route path="/overview/:email" element={<RagPickerCart/>} />
+        <Route path="/buyer" element={<BuyDash/>}/>
       </Routes>
     </BrowserRouter>
   );

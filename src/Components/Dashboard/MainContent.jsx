@@ -1,120 +1,118 @@
 import React, { useState, useEffect } from 'react';
-const Card = ({ type, price, location, firstName, lastName, items }) => {
- // Calculate average pricePerKg
- const calculateAveragePrice = () => {
-  if (items.length === 0) return 0;
-  const total = items.reduce((acc, item) => acc + item.pricePerKg, 0);
-  return (total / items.length).toFixed(2); // Calculate average and round to 2 decimal places
-};
-
-const averagePrice = calculateAveragePrice();
-
-return (
-  <div className="bg-white p-4 rounded-2xl shadow-md flex-1 min-w-[calc(33.333%-16px)] min-h-[calc(25%-10px)] mb-2 gap-2">
-    <div className="h-44 bg-gray-200 rounded-2xl mb-4"></div>
-    <h3 className="text-lg font-semibold">{type}</h3>
-    <p className="text-blue-500 mt-1">₹{averagePrice}  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">Avg/Kg</span></p>
-    <div className='flex mt-2'>
-      <span className="material-symbols-outlined">location_on</span>
-      <a href={`https://maps.google.com/?q=${location}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 ml-2 hover:underline">{location}</a>
-    </div>
-    <div className="mt-2">
-      <p className="text-gray-700">Buyer: {firstName} {lastName}</p>
-      <p className="text-gray-700">Items: {items.length > 0 ? items.map((item, index) => (
-        <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{item.name}</span>
-      )) : "No items listed"}</p>
-    </div>
-  </div>
-  );
-};
-
-const RecentMessages = () => {
-  const messages = [
-    { image: '/assets/Dashboard/photo.png', name: 'James Benny', message: 'Hey, Let me know if you\'re still available...' },
-    { image: '/assets/Dashboard/photo.png', name: 'William Chyntia', message: 'Okay thanks' },
-    { image: '/assets/Dashboard/photo.png', name: 'Henry David', message: 'Alright I\'ll get back to you ASAP' },
-    { image: '/assets/Dashboard/photo.png', name: 'Charlotte Flair', message: 'Sounds good buddy' },
-  ];
-
-  return (
-    <div className="p-4 bg-white shadow-md rounded-2xl h-auto">
-      <h2 className="text-lg font-semibold mb-4">Recent Messages</h2>
-      <ul>
-        {messages.map((msg, index) => (
-          <li key={index} className="mb-4">
-            <p className="font-semibold">{msg.name}</p>
-            <p className="text-gray-500">{msg.message}</p>
-          </li>
-        ))}
-      </ul>
-      <div className="bg-white h-[50vh]">
-        <h2 className="text-lg font-semibold mb-2">Map View</h2>
-        <div className="h-5/6 bg-gray-200 rounded"></div>
-      </div>
-    </div>
-  );
-};
-
+import mapboxgl from 'mapbox-gl';
+import Card from './Card';
+import RecentMessages from './Recentmsg';
+import axios from 'axios';
 const MainContent = ({ userData }) => {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [result, setRes] = useState(0);
   const [buyerData, setBuyerData] = useState([]);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('https://kudaserver.vercel.app/updatelocation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: localStorage.getItem("email"),
-          long,
-          lat,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      console.log('Location saved:', data);
-      setRes(data.length);
-
-      // Assuming `data` contains buyer information, update state
-      setBuyerData(data.usersWithinRadius); // Update with actual buyer data structure
-    } catch (error) {
-      console.error('Error saving location:', error);
-    }
-  };
-
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLong(position.coords.longitude);
-          setLat(position.coords.latitude);
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-        }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-    }
-  };
+  const [cityName, setCityName] = useState('');
 
   useEffect(() => {
+    mapboxgl.accessToken = 'pk.eyJ1IjoicmFqOTUyMzMiLCJhIjoiY2x3ZmswNWUwMHlsajJrcWVhZDl1ajIzNiJ9.dWRwxHmPuDYkC-cfLepNUA'; // Replace with your Mapbox access token
+    const map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      center: [long, lat], // starting position [lng, lat]
+      zoom: 9 // starting zoom
+    });
+
+    // Add navigation control to the map
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // Fetch location once when component mounts
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { longitude, latitude } = position.coords;
+            setLong(longitude.toFixed(4));
+            setLat(latitude.toFixed(4));
+
+            try {
+              const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
+                params: {
+                  q: `${latitude},${longitude}`,
+                  key: '8d32a33922764cbc88e3356e10ca5cea', // Replace with your OpenCage API key
+                }
+              });
+
+              if (response.data.results.length > 0) {
+                const city = response.data.results[0].formatted;
+                setCityName(city);
+              } else {
+                console.error('No results found');
+              }
+            } catch (error) {
+              console.error('Error fetching city name:', error);
+            }
+          },
+          (error) => {
+            console.error('Error getting location:', error);
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+    };
+
     getLocation();
+
+    return () => map.remove(); // Clean up map instance on unmount
   }, []);
 
+  // Fetch data based on exact location
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://kudaserver.vercel.app/updatelocation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: localStorage.getItem("email"),
+            long,
+            lat,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log('Location saved:', data);
+        setRes(data.length);
+
+        // Assuming `data` contains buyer information, update state
+        setBuyerData(data.usersWithinRadius); // Update with actual buyer data structure
+      } catch (error) {
+        console.error('Error saving location:', error);
+      }
+    };
+
     if (long !== 0 && lat !== 0) {
       fetchData();
     }
   }, [long, lat]);
+
+
+  const getRandomImage = () => {
+    const images = [
+      "/assets/Dashboard/img/electric.jpg",
+      "/assets/Dashboard/img/metal.jpg",
+      "/assets/Dashboard/img/paper.jpg",
+      "/assets/Dashboard/img/plastic.jpg",
+      "/assets/Dashboard/img/rubber.jpg",
+      "/assets/Dashboard/img/glass.jpg",
+    ];
+
+    const randomIndex = Math.floor(Math.random() * images.length);
+    return images[randomIndex];
+  };
 
   const SearchFilter = () => (
     <div className="flex flex-col p-4 bg-white shadow-md rounded-xl">
@@ -167,12 +165,14 @@ const MainContent = ({ userData }) => {
             buyerData.map((buyer, index) => (
               <Card
                 key={index}
+                img={getRandomImage()}
                 type={`${buyer.firstName} ${buyer.lastName}`}
                 price="To be determined" // Adjust as per your data structure
-                location={buyer.location ? `${buyer.location.coordinates[1]}, ${buyer.location.coordinates[0]}` : "Unknown location"}
+                location={buyer.location ? `${cityName}` : "Unknown location"}
                 firstName={buyer.firstName}
                 lastName={buyer.lastName}
                 items={buyer.items}
+                email={buyer.email}
               />
             ))
           ) : (
@@ -183,6 +183,7 @@ const MainContent = ({ userData }) => {
           <RecentMessages />
         </div>
       </div>
+      <div id="map" style={{ height: '400px' }}></div>
     </div>
   );
 };

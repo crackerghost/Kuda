@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LeftSidebar from './LeftSidebar'; // Adjust the path as needed
-import MainContent from './MainContent'; // Adjust the path as needed
+import LeftSidebar from './Leftsidebar'; // Adjust the path as needed
+import MainContentBuy from './MainContentBuy'; // Adjust the path as needed
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -25,6 +25,7 @@ const Dashboard = () => {
 
       const data = await response.json();
       setUserData(data.user);
+      
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -35,17 +36,19 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (userData && userData.role !== "Seller") {
-      navigate('/buyer'); // Assuming you have a route for the Buyer component
+    if (userData && userData.role !== "Buyer") {
+      navigate('/home'); // Assuming you have a route for the Buyer component
     }
   }, [userData, navigate]);
 
- 
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex">
       <LeftSidebar userData={userData} />
-      <MainContent userData={userData} />
+      <MainContentBuy userData={userData} />
     </div>
   );
 };
