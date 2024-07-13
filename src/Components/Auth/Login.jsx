@@ -75,6 +75,7 @@ function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mb-2 p-2 rounded mt-8"
+            required
           />
           <input
             type="password"
@@ -83,6 +84,7 @@ function Login() {
             value={pass}
             onChange={(e) => setPass(e.target.value)}
             className="mb-2 p-2 rounded"
+            required
           />
           <div className="w-[80%] mx-auto relative h-auto">
             <p className="text-gray-400 text-right ">

@@ -22,9 +22,9 @@ const Navbar = () => {
     <header className="w-full bg-[--bgColor--] z-20 relative">
       <nav className="w-11/12 mx-auto py-4 ">
         <div className="container mx-auto flex justify-between items-center px-6">
-          <div className="text-2xl font-semibold text-gray-800">
+          <Link to={"/"} className="text-2xl font-semibold text-gray-800">
             <img src="/assets/Landingpage/Logo.svg" alt="Logo" />
-          </div>
+          </Link>
           <div className="space-x-6 w-[50%] flex justify-center">
             <Link to="#features" className="text-gray-600 hover:text-gray-800">
               Features

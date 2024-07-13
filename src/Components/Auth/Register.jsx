@@ -15,15 +15,18 @@ function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await axios.post("https://kudaserver.vercel.app/register", {
-        firstName,
-        lastName,
-        kyc,
-        email,
-        pass,
-        role,
-        idProof,
-      });
+      const response = await axios.post(
+        "https://kudaserver.vercel.app/register",
+        {
+          firstName,
+          lastName,
+          kyc,
+          email,
+          pass,
+          role,
+          idProof,
+        }
+      );
 
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
@@ -58,13 +61,6 @@ function Register() {
 
   return (
     <div className="container w-[100vw] h-[90vh] flex flex-row justify-center items-center bgLogin">
-      {/* <div className="w-1/2 h-full ">
-        <img
-          src="https://www.telegraph.co.uk/content/dam/environment/2023/06/02/TELEMMGLPICT000337992854_16857228652110_trans_NvBQzQNjv4Bq9ZgHWGWfvdgN-PUV7CBULdNJqZG_WVMBeQV4RVTW7AY.jpeg?imwidth=960"
-          alt=""
-          className="h-[90vh] object-cover w-full"
-        />
-      </div> */}
       <div className="w-1/2 h-full flex justify-center items-center  ">
         <form
           className="flex flex-col  h-auto w-[80%] mx-auto justify-center items-center rounded-xl py-8  shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] bg-blue-100/30 backdrop-blur-lg"
@@ -83,6 +79,7 @@ function Register() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="mb-2 p-2 rounded"
+              required
             />
             <input
               type="text"
@@ -91,6 +88,7 @@ function Register() {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="mb-2 p-2 rounded"
+              required
             />
           </div>
           <input
@@ -100,6 +98,7 @@ function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mb-2 p-2 rounded"
+            required
           />
 
           <div className="flex w-[83%] mx-auto gap-x-4 my-1">
@@ -109,6 +108,7 @@ function Register() {
               value={role}
               onChange={(e) => setRole(e.target.value)}
               className="p-2 rounded bg-white w-1/2 text-gray-700"
+              required
             >
               <option value="" className="text-gray-500">
                 Account Type
@@ -126,6 +126,7 @@ function Register() {
               value={idProof}
               onChange={(e) => setIdProof(e.target.value)}
               className="p-2 rounded bg-white w-1/2 text-gray-700"
+              required
             >
               <option value="" className="text-gray-500">
                 Id Proof
@@ -146,6 +147,7 @@ function Register() {
             value={kyc}
             onChange={(e) => setKyc(e.target.value)}
             className="mb-2 p-2 rounded"
+            required
           />
 
           <input
@@ -155,6 +157,7 @@ function Register() {
             value={pass}
             onChange={(e) => setPass(e.target.value)}
             className="mb-2 p-2 rounded"
+            required
           />
           <button
             className="bg-[--btnColor--]  mt-4 flex justify-center items-center text-white p-4 rounded-md w-[80%] h-[15%] transition-all hover:scale-105"

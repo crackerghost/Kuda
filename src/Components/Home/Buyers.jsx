@@ -25,7 +25,7 @@ function Buyers() {
           </p>
           <div className="flex items-center">
             <img
-              className="w-[48px] h-[48px]"
+              className="w-[48px] h-[48px] "
               src="/assets/Landingpage/hassle.png"
               alt=""
             />
@@ -73,7 +73,7 @@ function Buyers() {
         </div>
 
         <div className="last flex justify-center items-center">
-          <img src="/assets/Landingpage/buyersMain.svg" alt="" />
+          <img src="/assets/Landingpage/buyersMain.svg" alt=""  className="rounded-md"/>
         </div>
       </div>
       

@@ -8,11 +8,11 @@ const Hero = () => {
           <h2 className="text-gray-500 font-bold text-3xl">
             Welcome to WasteWise Agency
           </h2>
-          <h1 className="text-7xl font-bold text-gray-800 mb-4 mt-5">
+          <h1 className="text-6xl 2xl:text-7xl font-bold text-gray-800 mb-4 mt-5">
             Turn Your Scrap <br /> into Cash
           </h1>
           <p className="text-2xl text-gray-600 mb-8 mt-3">
-            eco-friendly recycling solutions for all your scrap needs.
+            Eco-friendly recycling solutions for all your scrap needs.
             <br />
             turning waste into value for a greener future.
           </p>
