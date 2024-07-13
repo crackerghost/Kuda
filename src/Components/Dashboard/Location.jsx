@@ -9,8 +9,8 @@ function Location() {
     try {
       const response = await axios.post('/location', {
         email: 'raj123@gmail.com',
-        long:  2.3522,
-        lat: 48.8566
+        long,
+        lat
       });
       console.log('Location saved:', response.data);
     } catch (error) {
@@ -24,7 +24,6 @@ function Location() {
         (position) => {
           setLong(position.coords.longitude);
           setLat(position.coords.latitude);
-          fetchData(); // Call fetchData to send location data to server
         },
         (error) => {
           console.error('Error getting location:', error);
@@ -34,6 +33,13 @@ function Location() {
       console.error('Geolocation is not supported by this browser.');
     }
   };
+
+  // useEffect to call fetchData when long and lat change
+  React.useEffect(() => {
+    if (long !== 0 && lat !== 0) {
+      fetchData();
+    }
+  }, [long, lat]);
 
   return (
     <div className='h-[100vh] w-[100vw]'>

@@ -127,16 +127,6 @@ app.get("/verifytoken", (req, res) => {
   });
 });
 
-app.get("/check", async (req, res) => {
-  try {
-    const items = await regModel.find().exec(); // Using exec() to await the query
-   
-    res.json(items);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error fetching items" });
-  }
-});
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
