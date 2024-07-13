@@ -11,16 +11,7 @@ const bodyParser = require('body-parser');
 app.use(express.json());
 
 app.use(bodyParser.json());
-
-const corsOptions = {
-  origin: 'http://223.235.227.114', // Adjust to your specific IP address
-  methods: ['GET', 'POST'], // Add methods as needed
-  allowedHeaders: ['Content-Type', 'Authorization'], // Adjust headers as needed
-};
-
-// Use CORS middleware
-app.use(cors(corsOptions));
-
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, "../dist")));
 connectToDatabase();
