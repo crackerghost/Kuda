@@ -27,3 +27,10 @@ body{
 .containers{
     @apply w-full h-[100vh] flex flex-col items-center justify-center
 }
+
+.loader{
+    @apply w-[100vw] h-[100vh] flex justify-center items-center
+}
+.loader img{
+    @apply h-[100px] w-[100px]
+}
