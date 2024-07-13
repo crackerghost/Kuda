@@ -40,7 +40,7 @@ app.post('/verifyLogin', async (req, res) => {
   }
 });
 
-app.post('/location', async (req, res) => {
+app.post('/updatelocation', async (req, res) => {
   const { email, long, lat } = req.body;
 
   try {
