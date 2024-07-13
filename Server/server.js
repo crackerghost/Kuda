@@ -39,16 +39,16 @@ app.post('/verifyLogin', async (req, res) => {
 });
 
 app.post('/location', async (req, res) => {
-  const { userId, latitude, longitude } = req.body;
+  const { email, lat, long } = req.body;
 
-  const user = await regModel.findById(userId);
+  const user = await regModel.findById(email);
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
   }
 
   user.location = {
     type: 'Point',
-    coordinates: [longitude, latitude]
+    coordinates: [long, lat]
   };
 
   await user.save();
