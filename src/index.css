@@ -3,34 +3,48 @@
 @tailwind utilities;
 
 
-:root{
-    --bgColor-- : #E6F0FF;
-    --btnColor-- : #0F1B4C;
+:root {
+    --bgColor--: #E6F0FF;
+    --btnColor--: #0F1B4C;
 }
 
-body{
+body {
     @apply bg-[--bgColor--]
-    
 }
 
-.Seller{
+.Seller {
     @apply -translate-x-[100%]
 }
 
-.inner-container{
+.inner-container {
     @apply w-[90%] h-[45%] flex justify-between;
 }
 
-.first,.second{
+.first,
+.second {
     @apply flex flex-col justify-evenly w-[33.33%]
 }
-.containers{
+
+.containers {
     @apply w-full h-[100vh] flex flex-col items-center justify-center
 }
 
-.loader{
+.loader {
     @apply w-[100vw] h-[100vh] flex justify-center items-center
 }
-.loader img{
+
+.loader img {
     @apply h-[100px] w-[100px]
+}
+
+
+input {
+    @apply rounded-3xl h-10 outline-none p-4 w-5/6 my-2
+}
+
+.bgLogin {
+    background-image: url("https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-position: top;
+    background-repeat: no-repeat;
+    /* background-size: cover; */
 }
