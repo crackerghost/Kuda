@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import ReactMapGL, { Marker } from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 const RagPickerCart = () => {
     const { email } = useParams();
     const [items, setItems] = useState([]);
