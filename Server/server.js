@@ -12,13 +12,8 @@ const cors = require('cors');
 connectToDatabase();
 app.use(express.json());
 
-const corsOptions = {
-  origin: 'https://kuda-three.vercel.app/', // Allow only this origin
-  methods: ['GET', 'POST'],      // Allow only GET and POST requests
-  allowedHeaders: ['Content-Type'], // Allow only Content-Type header
-};
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.static(path.join(__dirname, "../dist")));
 app.post('/verifyLogin', async (req, res) => {
   const { email, pass } = req.body;
