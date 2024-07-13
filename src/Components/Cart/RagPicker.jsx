@@ -156,7 +156,7 @@ const RagPickerCart = () => {
         <div className="mt-8">
           <ReactMapGL
             {...viewport}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
+            mapboxAccessToken={MAPBOX_TOKEN}
             onViewportChange={handleViewportChange}
           >
             {data && data.location && (
