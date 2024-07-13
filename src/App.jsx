@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { BrowserRouter ,Routes,Route } from 'react-router-dom'
 import Home from './Components/Home/Home'
+import Location from './Components/Dashboard/Location'
+
 
 
 function App() {
@@ -36,6 +38,7 @@ function App() {
     <BrowserRouter>
     <Routes>
     <Route path='/' element={<Home/>}/>
+    <Route path='/location' element={<Location/>}/>
     </Routes>
     </BrowserRouter>  
     
