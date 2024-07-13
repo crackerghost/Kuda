@@ -42,7 +42,7 @@ app.post('/verifyLogin', async (req, res) => {
 
 app.post('/updatelocation', async (req, res) => {
   const { email, long, lat } = req.body;
-
+ console.log(email);
   try {
     // Find user by email
     const user = await regModel.findOne({ email });
