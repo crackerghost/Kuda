@@ -13,11 +13,12 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 const corsOptions = {
-  origin: 'https://kuda-three.vercel.app/',
-  methods: ['GET', 'POST'], // Add other methods if needed
-  allowedHeaders: ['Content-Type', 'Authorization'], // Adjust headers as per your requirements
+  origin: 'http://223.235.227.114', // Adjust to your specific IP address
+  methods: ['GET', 'POST'], // Add methods as needed
+  allowedHeaders: ['Content-Type', 'Authorization'], // Adjust headers as needed
 };
 
+// Use CORS middleware
 app.use(cors(corsOptions));
 
 
