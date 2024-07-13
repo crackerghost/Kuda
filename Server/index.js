@@ -3,18 +3,18 @@ const app = express();
 const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cors = require('cors');
 const secretKey = "rajsingh123@";
 const connectToDatabase = require("./Models/db");
 const regModel = require('./Models/regModel'); // Import RegModel
 
-const cors = require('cors');
-
-connectToDatabase();
 app.use(express.json());
 
-
+app.use(bodyParser.json());
 app.use(cors());
+
 app.use(express.static(path.join(__dirname, "../dist")));
+connectToDatabase();
 app.post('/verifyLogin', async (req, res) => {
   const { email, pass } = req.body;
   try {
