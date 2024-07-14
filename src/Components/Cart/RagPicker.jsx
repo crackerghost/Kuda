@@ -95,7 +95,10 @@ const RagPickerCart = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    
+    toast.success("Please Wait..", {
+        position: "top-center",
+        autoClose: 1000,
+      });
     // Prepare data to send
     const requestData = {
       requesterEmail: localStorage.getItem("email"),
@@ -119,7 +122,12 @@ const RagPickerCart = () => {
       toast.success("Proceed Payment", {
         position: "top-center",
         autoClose: 1000,
+        onClose:(
+            window.location.href="https://payments-test.cashfree.com/forms/wastewise"
+        )
       });
+
+
       // Add any additional logic after successful request
 
     } catch (error) {
