@@ -77,7 +77,7 @@ function AppContent() {
       }
     };
 
-    if (!["/", "/signup", "/login","/register"].includes(location.pathname)) {
+    if (!["/", "/signup", "/login","/register","/overview"].includes(location.pathname)) {
      if(localStorage.getItem('token') == null){
       navigate('/')
      }
