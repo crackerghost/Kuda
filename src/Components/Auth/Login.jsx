@@ -84,7 +84,7 @@ function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mb-2 p-2 rounded mt-8"
+            className="mb-2 p-2 rounded-full border-gray-100 border mt-8"
             required
           />
           <input
@@ -93,13 +93,11 @@ function Login() {
             placeholder="Password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
-            className="mb-2 p-2 rounded"
+            className="mb-2 p-2 rounded-full border-gray-100 border mt-8"
             required
           />
           <div className="w-[80%] mx-auto relative h-auto">
-            <p className="text-gray-400 text-right">
-              <Link to="/forgetPassword">Forget Password?</Link>
-            </p>
+          
             <p className="text-center my-4">Or Login With</p>
             <div className="flex gap-4 text-3xl justify-center">
               <FaGoogle />
