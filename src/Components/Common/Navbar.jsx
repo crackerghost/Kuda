@@ -31,7 +31,7 @@ const Navbar = () => {
       <nav className="w-11/12 mx-auto py-4">
         <div className="container mx-auto flex justify-between items-center px-6">
           <Link to="/" className="text-2xl font-semibold text-gray-800">
-            <img src="/assets/Wastewise.svg" alt="Logo" />
+            <img src="/assets/Wastewise.svg" width={"50px"} height={"50px"} alt="Logo" />
           </Link>
           <div className="hidden md:flex space-x-6 w-[50%] justify-center">
             <Link to="#features" className="text-gray-600 hover:text-gray-800">
