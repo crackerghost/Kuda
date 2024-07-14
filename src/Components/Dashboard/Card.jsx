@@ -27,9 +27,9 @@ const Card = ({ type,email, price,img, location,coord, firstName, lastName, item
       <p className="text-blue-500 mt-1">₹{averagePrice}  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">Avg/Kg</span></p>
       <div className='flex mt-2'>
         <span className="material-symbols-outlined">location_on</span>
-        <img src="/assets/New folder/rating.webp" width={"200px"} height={"50px"} alt="" />
         <p className="text-gray-500 ml-2 ">{location}</p>
       </div>
+      <img src="/assets/New folder/rating.webp" width={"200px"} height={"50px"} alt="" />
       <div className="mt-2">
         <p className="text-gray-700">Buyer: {firstName} {lastName}</p>
         <p className="text-gray-700">Items: {items.length > 0 ? items.map((item, index) => (
