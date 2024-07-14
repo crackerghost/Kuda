@@ -105,10 +105,13 @@ const MainContentBuy = ({ userData }) => {
   const handleAcceptRequest = async (request) => {
     try {
       // Update status in your database (Buyer's side)
-      const buyerResponse = await axios.post('https://kudaserver.vercel.app/updateStatus', {
-        email: localStorage.getItem("email"),
-        requestID: request._id,
-        status: 'Appointed'
+      const buyerResponse = await axios.post('https://kudaserver.vercel.app/sendApproveReq', {
+        requesterEmail: localStorage.getItem("email"),
+        status: 'Appointed',
+        recipientEmail: request.requesterEmail,
+        scheduledTime: request.scheduledTime,
+        additionalData: request.additionalData
+
       });
 
       // Update status in requester's database
