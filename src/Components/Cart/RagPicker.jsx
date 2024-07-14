@@ -95,10 +95,7 @@ const RagPickerCart = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    toast.success("Please Wait..", {
-        position: "top-center",
-        autoClose: 1000,
-      });
+    
     // Prepare data to send
     const requestData = {
       requesterEmail: localStorage.getItem("email"),
