@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaGoogle, FaFacebook, FaTwitter } from "react-icons/fa";
@@ -8,9 +8,11 @@ import { FaGoogle, FaFacebook, FaTwitter } from "react-icons/fa";
 function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    
     try {
       const response = await axios.post("https://kudaserver.vercel.app/verifyLogin", {
         email,
@@ -24,7 +26,11 @@ function Login() {
           position: "top-center",
           autoClose: 1000,
           onClose: () => {
-            window.location.href = "/home";
+            if(response.data.role === "Seller"){
+              navigate('/home');
+            }else{
+              navigate('/buyer');
+            }
           },
         });
       } else if (response.status === 400) {
@@ -61,13 +67,13 @@ function Login() {
 
   return (
     <div className="container w-[100vw] h-[90vh] flex flex-row justify-center items-center bgLogin">
-      <div className="w-1/2 h-full flex justify-center items-center  ">
+      <div className="w-1/2 h-full flex justify-center items-center">
         <form
-          className="flex flex-col  h-auto w-[80%] mx-auto justify-center items-center rounded-xl py-8  shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] bg-blue-100/30 backdrop-blur-lg"
+          className="flex flex-col h-auto w-[80%] mx-auto justify-center items-center rounded-xl py-8 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] bg-blue-100/30 backdrop-blur-lg"
           onSubmit={handleSubmit}
         >
-          <h1 className=" text-gray-950 text-3xl font-bold">Welcome Buddy</h1>
-          <p>Login your account</p>
+          <h1 className="text-gray-950 text-3xl font-bold">Welcome Buddy</h1>
+          <p>Login to your account</p>
           <input
             type="text"
             id="email"
@@ -87,10 +93,10 @@ function Login() {
             required
           />
           <div className="w-[80%] mx-auto relative h-auto">
-            <p className="text-gray-400 text-right ">
-              <Link to="/forgetPassword">Forget Password ?</Link>
+            <p className="text-gray-400 text-right">
+              <Link to="/forgetPassword">Forget Password?</Link>
             </p>
-            <p className="text-center my-4 ">Or Login With</p>
+            <p className="text-center my-4">Or Login With</p>
             <div className="flex gap-4 text-3xl justify-center">
               <FaGoogle />
               <FaFacebook />
@@ -99,7 +105,7 @@ function Login() {
           </div>
 
           <button
-            className="bg-[--btnColor--]  mt-10 flex justify-center items-center text-white p-4 rounded-md w-[80%] h-[15%] transition-all hover:scale-105"
+            className="bg-[--btnColor--] mt-10 flex justify-center items-center text-white p-4 rounded-md w-[80%] h-[15%] transition-all hover:scale-105"
             type="submit"
           >
             Submit

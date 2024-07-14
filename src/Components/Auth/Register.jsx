@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -11,6 +13,7 @@ function Register() {
   const [kyc, setKyc] = useState("");
   const [idProof, setIdProof] = useState("");
   const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -35,7 +38,11 @@ function Register() {
           position: "top-center",
           autoClose: 1000,
           onClose: () => {
-            window.location.href = "/home";
+            if(response.data.role === "Seller"){
+              navigate('/home');
+            }else{
+              navigate('/buyer');
+            }
           },
         });
       } else if (response.status === 400) {
