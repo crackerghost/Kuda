@@ -1,3 +1,6 @@
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import map from "../../assets/icon/map.png";
 
 const cities = [
@@ -16,15 +19,15 @@ const cities = [
 const City = ({ name, status }) => {
   const statusClass =
     status === "active"
-      ? "bg-blue-950 text-white h-9 "
-      : "bg-gray-100 text-black ";
+      ? "bg-blue-950 text-white h-9"
+      : "bg-gray-100 text-black";
 
   return (
     <div
-      className={`px-3 py-1 rounded-md  ${statusClass} m-1`}
+      className={`px-3 py-1 rounded-md ${statusClass} m-1`}
+      data-aos="fade-up"
     >
       <p>{name}</p>
-
       <p
         className={`text-sm text-gray-600 ${
           status === "active" ? "hidden" : "text-sm"
@@ -37,11 +40,19 @@ const City = ({ name, status }) => {
 };
 
 const MapSection = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, 
+      easing: "ease-in-out", 
+      once: true,
+    });
+  }, []);
+
   return (
     <div className="container mx-auto my-16 p-8 rounded-lg">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="flex flex-col justify-center">
-          <h2 className="text-6xl font-bold text-black mb-4">
+        <div className="flex flex-col justify-center" data-aos="fade-right">
+          <h2 className="text-4xl md:text-6xl font-bold text-black mb-4">
             Covering Every Corner of the Nation
           </h2>
           <p className="text-lg text-gray-700 mb-6">
@@ -55,8 +66,8 @@ const MapSection = () => {
             ))}
           </div>
         </div>
-        <div className="flex justify-center items-center">
-          <img src={map} alt="India Map" className="w-[80%] h-auto" />
+        <div className="flex justify-center items-center" data-aos="fade-left">
+          <img src={map} alt="India Map" className="w-full h-auto max-w-sm md:max-w-md lg:max-w-lg" />
         </div>
       </div>
     </div>

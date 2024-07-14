@@ -118,39 +118,7 @@ const MainContent = ({ userData }) => {
     return images[randomIndex];
   };
 
-  const SearchFilter = () => (
-    <div className="flex flex-col p-4 bg-white shadow-md rounded-xl">
-      <div className='flex justify-between text-xl font-[500]'>
-        <p>{result} Buyers</p>
-        <p>Map view</p>
-      </div>
-      <div className='flex '>
-        <input
-          type="text"
-          placeholder="Search Here..."
-          className="border p-2 rounded-4xl w-1/4 h-12 ml-3"
-        />
-        <input
-          type="text"
-          placeholder="Price"
-          className="border p-2 rounded-4xl w-auto h-12 ml-12"
-        />
-        <select className="border p-2 rounded-3xl h-12 mt-2 ml-8 w-40 pl-5 py-3 hover:text-white hover:border-black hover:bg-[--btnColor--] transition duration-300">
-          <option value="price">Scraps</option>
-          <option value="material">Material Type</option>
-        </select>
-        <select className="border p-2 rounded-3xl h-12 mt-2 ml-8 w-48 pl-5 hover:border hover:text-white hover:border-[--btnColor--] hover:bg-[--btnColor--] transition duration-300">
-          <option value="scraps">Material type</option>
-          <option value="other">Other</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Filters"
-          className="border p-2 rounded-4xl w-auto h-12 ml-10"
-        />
-      </div>
-    </div>
-  );
+  
 
   return (
     <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
@@ -161,7 +129,7 @@ const MainContent = ({ userData }) => {
           </ul>
         </nav>
       </header>
-      <SearchFilter />
+      
       <div className='flex h-auto'>
         <div className="flex flex-wrap gap-4 mt-4 ml-6 h-1/4 w-2/3">
           {buyerData.length > 0 ? (

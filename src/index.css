@@ -45,7 +45,7 @@ input {
 .bgLogin {
     background-image: url("https://img.freepik.com/free-vector/end-quarantine-concept_23-2148554365.jpg?t=st=1720971819~exp=1720975419~hmac=45007c19261484a0bff1a4e0a34140e3e5880f4ebe15643172aad09917e02885&w=1060");
     background-position: top;
-    background-size: cover;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     /* background-size: cover; */
 }
