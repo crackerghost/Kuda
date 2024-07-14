@@ -157,7 +157,7 @@ const MainContentBuy = ({ userData }) => {
         <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
           {userData.requests && userData.requests.length > 0 ? (
             userData.requests.map((request, index) => (
-              request.status !== "Accepted" && (
+              request.status !== "Appointed" && (
                 <Card
                   key={index}
                   Name={`Request from ${request.requesterEmail}`}
