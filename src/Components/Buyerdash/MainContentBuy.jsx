@@ -86,6 +86,10 @@ const MainContentBuy = ({ userData }) => {
     fetchLocation();
   }, [lat, long]);
   const handleAcceptRequest = async (request) => {
+    toast.success("Please Wait..", {
+      position: "top-center",
+      autoClose: 500,
+    });
     try {
       const response = await axios.post('https://kudaserver.vercel.app/sendApproveReq', {
         requesterEmail: localStorage.getItem("email"),
@@ -125,6 +129,10 @@ const MainContentBuy = ({ userData }) => {
   };
   
   const handleRejectRequest = async (request) => {
+    toast.success("Please Wait..", {
+      position: "top-center",
+      autoClose: 500,
+    });
     try {
       const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
         requesterEmail: request.requesterEmail,
