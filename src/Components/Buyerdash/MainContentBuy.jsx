@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-
+const formatDateTime = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  });
+};
 const Card = ({ Name, Address, scheduledTime, Accept, Reject, onRequestAccept, onRequestReject }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
     <div>
       <h3 className="text-3xl font-semibold">{Name}</h3>
       <p className="text-2xl text-blue-500 mt-2">{Address}</p>
-      <p className="text-2xl text-blue-500 mt-2">{scheduledTime}</p>
+      <p className="text-2xl text-blue-500 mt-2">{formatDateTime(scheduledTime)}</p>
     </div>
     <div>
       <button
