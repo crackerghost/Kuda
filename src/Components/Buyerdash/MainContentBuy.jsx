@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { format } from 'date-fns';
+
 const formatDateTime = (isoString) => {
   const date = new Date(isoString);
-  return date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true
-  });
+  return format(date, 'PPpp'); // Formats date and time in a readable format
 };
 const Card = ({ Name, Address, scheduledTime, Accept, Reject, onRequestAccept, onRequestReject }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
