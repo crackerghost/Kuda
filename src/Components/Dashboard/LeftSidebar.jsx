@@ -9,6 +9,7 @@ const LeftSidebar = ({ userData }) => {
         />
         <h2 className="text-center mt-4 text-2xl">{userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...'}</h2>
         <h2 className="text-center mt-2 text-gray-400 mb-4">{userData ? userData.email : 'Loading...'}</h2>
+        <h2 className="text-center mt-2 text-gray-400 mb-4">{userData ? userData.cityName : 'Loading...'}</h2>
       </div>
       <ul>
         <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black bg-black transition duration-300"><span className="material-symbols-outlined mr-2">dashboard</span>  Dashboard</a></li>

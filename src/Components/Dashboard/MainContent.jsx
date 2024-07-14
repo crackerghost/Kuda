@@ -3,102 +3,106 @@ import mapboxgl from 'mapbox-gl';
 import Card from './Card';
 import RecentMessages from './Recentmsg';
 import axios from 'axios';
+
 const MainContent = ({ userData }) => {
-  const [long, setLong] = useState(0);
-  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(null);
+  const [lat, setLat] = useState(null);
   const [result, setRes] = useState(0);
   const [buyerData, setBuyerData] = useState([]);
   const [cityName, setCityName] = useState('');
 
   useEffect(() => {
     mapboxgl.accessToken = 'pk.eyJ1IjoicmFqOTUyMzMiLCJhIjoiY2x3ZmswNWUwMHlsajJrcWVhZDl1ajIzNiJ9.dWRwxHmPuDYkC-cfLepNUA'; // Replace with your Mapbox access token
-    const map = new mapboxgl.Map({
-      container: 'map', // container id
-      style: 'mapbox://styles/mapbox/streets-v11', // style URL
-      center: [long, lat], // starting position [lng, lat]
-      zoom: 9 // starting zoom
-    });
 
-    // Add navigation control to the map
-    map.addControl(new mapboxgl.NavigationControl());
+    if (lat !== null && long !== null) {
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [long, lat],
+        zoom: 9
+      });
 
-    // Fetch location once when component mounts
-    const getLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { longitude, latitude } = position.coords;
-            setLong(longitude.toFixed(4));
-            setLat(latitude.toFixed(4));
+      map.addControl(new mapboxgl.NavigationControl());
 
-            try {
-              const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
-                params: {
-                  q: `${latitude},${longitude}`,
-                  key: '8d32a33922764cbc88e3356e10ca5cea', // Replace with your OpenCage API key
-                }
-              });
+      return () => map.remove();
+    }
+  }, [lat, long]);
 
-              if (response.data.results.length > 0) {
-                const city = response.data.results[0].formatted;
-                setCityName(city);
-              } else {
-                console.error('No results found');
-              }
-            } catch (error) {
-              console.error('Error fetching city name:', error);
-            }
-          },
-          (error) => {
-            console.error('Error getting location:', error);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported by this browser.');
-      }
-    };
-
-    getLocation();
-
-    return () => map.remove(); // Clean up map instance on unmount
-  }, []);
-
-  // Fetch data based on exact location
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch('https://kudaserver.vercel.app/updatelocation', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: localStorage.getItem("email"),
-            long,
-            lat,
-          }),
-        });
+      if (long !== null && lat !== null && cityName) {
+        try {
+          const response = await fetch('https://kudaserver.vercel.app/updatelocation', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: localStorage.getItem("email"),
+              long,
+              lat,
+              cityName
+            }),
+          });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+          console.log('Location saved:', data);
+          setRes(data.length);
+          setBuyerData(data.usersWithinRadius);
+        } catch (error) {
+          console.error('Error saving location:', error);
         }
-
-        const data = await response.json();
-        console.log('Location saved:', data);
-        setRes(data.length);
-
-        // Assuming `data` contains buyer information, update state
-        setBuyerData(data.usersWithinRadius); // Update with actual buyer data structure
-      } catch (error) {
-        console.error('Error saving location:', error);
       }
     };
 
-    if (long !== 0 && lat !== 0) {
-      fetchData();
-    }
-  }, [long, lat]);
+    fetchData();
+  }, [long, lat, cityName]);
 
+  useEffect(() => {
+    const fetchLocation = async () => {
+      if (lat === null || long === null) {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+
+          const { longitude, latitude } = position.coords;
+          setLong(longitude.toFixed(4));
+          setLat(latitude.toFixed(4));
+
+          const options = {
+            method: 'GET',
+            url: 'https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi',
+            params: {
+              lat: latitude,
+              lng: longitude
+            },
+            headers: {
+              'x-rapidapi-key': 'b25121b381msh09da0d56b03f926p114fc4jsnd0bb1e7aedc6',
+              'x-rapidapi-host': 'address-from-to-latitude-longitude.p.rapidapi.com'
+            }
+          };
+
+          const response = await axios.request(options);
+          console.log(response.data);
+          if (response.data.Results.length > 0) {
+            const city = response.data.Results[0].city;
+            setCityName(city);
+          } else {
+            console.error('No city found in response');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
+
+    fetchLocation();
+  }, [lat, long]);
 
   const getRandomImage = () => {
     const images = [
@@ -167,8 +171,8 @@ const MainContent = ({ userData }) => {
                 key={index}
                 img={getRandomImage()}
                 type={`${buyer.firstName} ${buyer.lastName}`}
-                price="To be determined" // Adjust as per your data structure
-                location={buyer.location ? `${cityName}` : "Unknown location"}
+                price="To be determined"
+                location={buyer.location ? `${buyer.city}` : "Unknown location"}
                 firstName={buyer.firstName}
                 lastName={buyer.lastName}
                 items={buyer.items}
