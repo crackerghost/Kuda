@@ -125,14 +125,17 @@ const MainContentBuy = ({ userData }) => {
 
       toast.success("Status Updated", {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 600,
+        onClose: () => {
+          window.location.reload();
+        }
       });
 
       // Optionally, update UI or state to reflect the change
     } catch (error) {
       toast.error("Something Went Wrong", {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 600,
       });
       console.error('Error accepting request:', error);
       // Handle error as needed
