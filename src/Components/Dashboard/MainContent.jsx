@@ -125,7 +125,7 @@ const MainContent = ({ userData }) => {
       <header className='text-2xl w-full m-3 '>
         <nav>
           <ul>
-            <a className='ml-8 hover:font-[500] hover:underline'>Sell</a>
+            <a className='ml-8 hover:font-[500] bg-[--btnColor--] p-2 rounded-2xl text-white'>Sell</a>
           </ul>
         </nav>
       </header>
