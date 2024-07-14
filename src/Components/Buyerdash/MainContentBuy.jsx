@@ -31,6 +31,7 @@ const MainContentBuy = ({ userData }) => {
   const [cityName, setCityName] = useState(null);
   const [res, setRes] = useState([]);
   const [buyerData, setBuyerData] = useState([]);
+  const [requests, setRequests] = useState(userData.requests || []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -160,7 +161,7 @@ const MainContentBuy = ({ userData }) => {
         position: "top-center",
         autoClose: 500,
         onClose: () => {
-          window.location.reload();
+          setRequests(requests.filter(r => r._id !== request._id));
         }
       });
 
@@ -192,9 +193,9 @@ const MainContentBuy = ({ userData }) => {
         </header>
         <div className='flex h-auto'>
           <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
-            {userData.requests && userData.requests.length > 0 ? (
-              userData.requests.map((request, index) => (
-                request.status !== "Appointed" && request.status !== "Rejected" (
+            {requests && requests.length > 0 ? (
+              requests.map((request, index) => (
+                request.status !== "Appointed" && request.status !== "Rejected" && (
                   <Card
                     key={index}
                     Name={`Request from ${request.requesterEmail}`}
