@@ -97,6 +97,11 @@ const MainContentBuy = ({ userData }) => {
     fetchLocation();
   }, [lat, long]);
 
+  // Render the component only when cityName is available
+  if (!cityName) {
+    return null; // or loading indicator, depending on your UI needs
+  }
+
   return (
     <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
       <header className='text-2xl w-full m-3 '>

@@ -172,7 +172,7 @@ const MainContent = ({ userData }) => {
                 img={getRandomImage()}
                 type={`${buyer.firstName} ${buyer.lastName}`}
                 price="To be determined"
-                location={buyer.location ? `${buyer.city}` : "Unknown location"}
+                location={buyer.cityName ? `${buyer.cityName}` : "Unknown location"}
                 firstName={buyer.firstName}
                 lastName={buyer.lastName}
                 items={buyer.items}
