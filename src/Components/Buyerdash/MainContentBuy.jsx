@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Card = ({ Name, Address, Accept, Reject }) => (
+const Card = ({ Name, Address, Accept, Reject, onRequestAccept }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
     <div>
       <h3 className="text-3xl font-semibold">{Name}</h3>
       <p className="text-2xl text-blue-500 mt-2">{Address}</p>
     </div>
     <div>
-      <button className='text-xl text-white py-3 px-7 mt-3 rounded-full border-green-500 bg-green-500'>{Accept}</button>
+      <button
+        className='text-xl text-white py-3 px-7 mt-3 rounded-full border-green-500 bg-green-500'
+        onClick={onRequestAccept}
+      >
+        {Accept}
+      </button>
       <button className='text-xl text-white py-3 px-8 ml-5 rounded-full border-red-600 bg-red-600'>{Reject}</button>
     </div>
   </div>
@@ -97,7 +102,31 @@ const MainContentBuy = ({ userData }) => {
     fetchLocation();
   }, [lat, long]);
 
-  // Render the component only when cityName is available
+  const handleAcceptRequest = async (request) => {
+    try {
+      // Update status in your database (Buyer's side)
+      const buyerResponse = await axios.post('https://kudaserver.vercel.app/updateStatus', {
+        email: localStorage.getItem("email"),
+        requestID: request._id,
+        status: 'Appointed'
+      });
+
+      // Update status in requester's database
+      const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
+        requesterEmail: request.requesterEmail,
+        requestID: request._id,
+        status: 'Appointed'
+      });
+
+      console.log('Request accepted and status updated:', buyerResponse.data, requesterResponse.data);
+
+      // Optionally, update UI or state to reflect the change
+    } catch (error) {
+      console.error('Error accepting request:', error);
+      // Handle error as needed
+    }
+  };
+
   if (!cityName) {
     return null; // or loading indicator, depending on your UI needs
   }
@@ -121,6 +150,7 @@ const MainContentBuy = ({ userData }) => {
                 Address={`Location: ${request.additionalData}`}
                 Accept="Accept"
                 Reject="Reject"
+                onRequestAccept={() => handleAcceptRequest(request)}
               />
             ))
           ) : (
