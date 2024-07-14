@@ -118,7 +118,7 @@ const MainContentBuy = ({ userData }) => {
               <Card
                 key={index}
                 Name={`Request from ${request.requesterEmail}`}
-                Address={`Location: ${request.requesterLocation.coordinates[1]}, ${request.requesterLocation.coordinates[0]}`}
+                Address={`Location: ${request.additionalData}`}
                 Accept="Accept"
                 Reject="Reject"
               />
