@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-
 import { format, parseISO } from 'date-fns';
 
 const formatDateTime = (isoString) => {
@@ -43,43 +42,7 @@ const MainContentBuy = ({ userData }) => {
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [cityName, setCityName] = useState(null);
-  const [res, setRes] = useState([]);
-  const [buyerData, setBuyerData] = useState([]);
   const [requests, setRequests] = useState(userData.requests || []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (long !== null && lat !== null && cityName) {
-        try {
-          const response = await fetch('https://kudaserver.vercel.app/updatelocation', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: localStorage.getItem("email"),
-              long,
-              lat,
-              cityName
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const data = await response.json();
-          console.log('Location saved:', data);
-          setRes(data.length);
-          setBuyerData(data.usersWithinRadius);
-        } catch (error) {
-          console.error('Error saving location:', error);
-        }
-      }
-    };
-
-    fetchData();
-  }, [long, lat, cityName]);
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -122,73 +85,76 @@ const MainContentBuy = ({ userData }) => {
 
     fetchLocation();
   }, [lat, long]);
-
   const handleAcceptRequest = async (request) => {
     try {
-      // Update status in your database (Buyer's side)
-      const buyerResponse = await axios.post('https://kudaserver.vercel.app/sendApproveReq', {
+      const response = await axios.post('https://kudaserver.vercel.app/sendApproveReq', {
         requesterEmail: localStorage.getItem("email"),
         status: 'Appointed',
         recipientEmail: request.requesterEmail,
         scheduledTime: request.scheduledTime,
         additionalData: request.additionalData
       });
-
-      // Update status in requester's database
+  
+      console.log('Buyer response:', response.data); // Log response for debugging
+  
       const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
         requesterEmail: request.requesterEmail,
         recipientEmail: request.recipientEmail,
         requestID: request._id,
         status: 'Appointed'
       });
-
+  
+      console.log('Requester response:', requesterResponse.data); // Log response for debugging
+  
       toast.success("Status Updated", {
         position: "top-center",
         autoClose: 1000,
         onClose: () => {
-          setRequests(requests.filter(r => r._id !== request._id));
+          const updatedRequests = requests.filter(r => r._id !== request._id);
+          setRequests(updatedRequests);
         }
       });
-
-      // Optionally, update UI or state to reflect the change
+  
     } catch (error) {
       toast.error("Something Went Wrong", {
         position: "top-center",
         autoClose: 1000,
       });
       console.error('Error accepting request:', error);
-      // Handle error as needed
     }
   };
-
+  
   const handleRejectRequest = async (request) => {
     try {
-      // Update status in requester's database to rejected
       const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
         requesterEmail: request.requesterEmail,
         recipientEmail: request.recipientEmail,
         requestID: request._id,
         status: 'Rejected'
       });
-
+  
+      console.log('Requester response:', requesterResponse.data); // Log response for debugging
+  
       toast.success("Request Rejected", {
         position: "top-center",
         autoClose: 500,
         onClose: () => {
-          setRequests(requests.filter(r => r._id !== request._id));
+          const updatedRequests = requests.filter(r => r._id !== request._id);
+          setRequests(updatedRequests);
         }
       });
-
-      // Optionally, update UI or state to reflect the change
+  
     } catch (error) {
       toast.error("Something Went Wrong", {
         position: "top-center",
         autoClose: 500,
       });
       console.error('Error rejecting request:', error);
-      // Handle error as needed
     }
   };
+  
+
+ 
 
   if (!cityName) {
     return null; // or loading indicator, depending on your UI needs
@@ -198,13 +164,6 @@ const MainContentBuy = ({ userData }) => {
     <>
       <ToastContainer />
       <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
-        <header className='text-2xl w-full m-3 '>
-          <nav>
-            <ul>
-              <a className='text-white hover:font-[500] hover:text-white hover:text-[--btnColor--] hover:underline border bg-[--btnColor--] px-6 py-2 rounded-xl'>Buy</a>
-            </ul>
-          </nav>
-        </header>
         <div className='flex h-auto'>
           <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
             {requests && requests.length > 0 ? (
