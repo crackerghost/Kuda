@@ -132,7 +132,7 @@ const MainContentBuy = ({ userData }) => {
         position: "top-center",
         autoClose: 1000,
         onClose: () => {
-          window.location.reload();
+          setRequests(requests.filter(r => r._id !== request._id));
         }
       });
 
