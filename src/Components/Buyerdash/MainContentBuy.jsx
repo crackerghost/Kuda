@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-const Card = ({ Name, Address, Accept, Reject, onRequestAccept, onRequestReject }) => (
+const Card = ({ Name, Address, scheduledTime, Accept, Reject, onRequestAccept, onRequestReject }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
     <div>
       <h3 className="text-3xl font-semibold">{Name}</h3>
       <p className="text-2xl text-blue-500 mt-2">{Address}</p>
+      <p className="text-2xl text-blue-500 mt-2">{scheduledTime}</p>
     </div>
     <div>
       <button
@@ -200,6 +201,7 @@ const MainContentBuy = ({ userData }) => {
                     key={index}
                     Name={`Request from ${request.requesterEmail}`}
                     Address={`Location: ${request.additionalData}`}
+                    scheduledTime={`${request.scheduledTime}`}
                     Accept="Accept"
                     Reject="Reject"
                     onRequestAccept={() => handleAcceptRequest(request)}
