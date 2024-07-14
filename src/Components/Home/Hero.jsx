@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 
 const Hero = () => {
   return (
@@ -16,9 +18,19 @@ const Hero = () => {
             <br />
             turning waste into value for a greener future.
           </p>
-          <button className="px-6 py-3 text-base text-white bg-[--btnColor--] rounded-xl w-[170px] h-[50px] mt-3 ">
-            More About Us
-          </button>
+          
+          {
+            localStorage.getItem('token')?
+<Link to={"/home"}>
+ <button className="px-6 py-3 text-base text-white bg-[--btnColor--] rounded-xl w-[170px] h-[50px] mt-3 "> 
+ Dashboard
+</button></Link>:<Link to={"/register"}><button className="px-6 py-3 text-base text-white bg-[--btnColor--] rounded-xl w-[170px] h-[50px] mt-3 ">
+ Register
+</button></Link>
+          }
+         
+        
+         
         </main>
         <main>
           <img
