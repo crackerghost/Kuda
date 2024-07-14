@@ -19,7 +19,7 @@ const Card = ({ Name, Address, scheduledTime, Accept, Reject, onRequestAccept, o
     <div>
       <h3 className="text-3xl font-semibold">{Name}</h3>
       <p className="text-2xl text-blue-500 mt-2">{Address}</p>
-      <p className="text-2xl text-blue-500 mt-2">{formatDateTime(scheduledTime)}</p>
+      <p className="text-2xl text-blue-500 mt-2">Scheduled At : {formatDateTime(scheduledTime)}</p>
     </div>
     <div>
       <button
@@ -181,7 +181,7 @@ const MainContentBuy = ({ userData }) => {
                     key={index}
                     Name={`Request from ${request.requesterEmail}`}
                     Address={`Location: ${request.additionalData}`}
-                    scheduledTime={`Scheduled At :- ${request.scheduledTime}`}
+                    scheduledTime={`${request.scheduledTime}`}
                     Accept="Accept"
                     Reject="Reject"
                     onRequestAccept={() => handleAcceptRequest(request)}

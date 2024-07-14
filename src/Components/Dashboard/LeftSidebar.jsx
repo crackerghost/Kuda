@@ -13,10 +13,8 @@ const LeftSidebar = ({ userData }) => {
       </div>
       <ul>
         <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black bg-black transition duration-300"><span className="material-symbols-outlined mr-2">dashboard</span>  Dashboard</a></li>
-        <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">sms</span>  Inbox</a></li>
-        <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">payment</span>  Payments</a></li>
-        <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">notifications</span>  Notifications</a></li>
-        <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">settings</span>   Settings</a></li>
+        <li className="mb-5"><a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">payment</span>  My Requests</a></li>
+
       </ul>
     </div>
   );

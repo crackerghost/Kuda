@@ -11,6 +11,8 @@ import Navbar from "./Components/Common/Navbar";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import RagPickerCart from "./Components/Cart/RagPicker";
 import BuyDash from "./Components/Buyerdash/Dashboard";
+import TawkTo from "./Components/TawkTo";
+
 
 function App() {
   const [loader, setLoader] = useState(true);
@@ -102,6 +104,7 @@ function App() {
         <Route path="/overview/:email" element={<RagPickerCart/>} />
         <Route path="/buyer" element={<BuyDash/>}/>
       </Routes>
+      <TawkTo/>
     </BrowserRouter>
   );
 }
