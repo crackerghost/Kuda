@@ -14,15 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
   useEffect(() => {
-    gsap.to(".Buyers", {
-      x: "-100%",
-      scrollTrigger: {
-        trigger: ".Buyers",
-        start: "220vh",
-        end: "bottom 0%",
-        scrub: 1,
-      },
-    });
+ 
 
     // Animation for Sellers section
     gsap.to(".Seller", {
