@@ -17,6 +17,10 @@ function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    toast.success("Please Wait..", {
+      position: "top-center",
+      autoClose: 1000,
+    });
     try {
       const response = await axios.post(
         "https://kudaserver.vercel.app/register",
