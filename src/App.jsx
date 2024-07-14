@@ -29,6 +29,22 @@ function App() {
   //   };
   // }, []);
 
+
+  useEffect(() => {
+    const fetchMapToken = async () => {
+      try {
+        const response = await axios.get('https://kudaserver.vercel.app/map-token');
+        const token = response.data.token;
+        localStorage.setItem("token",token)
+      } catch (error) {
+        console.error('Error fetching map token:', error);
+        // Handle error as needed
+      }
+    };
+
+    fetchMapToken();
+  }, []);
+
   useEffect(() => {
     // const location = useLocation();
     const verifyToken = async () => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
 
 const RagPickerCart = () => {
   const { email } = useParams();
@@ -115,7 +116,10 @@ const RagPickerCart = () => {
         }
       });
 
-      console.log('Request sent successfully:', response.data);
+      toast.success("Proceed Payment", {
+        position: "top-center",
+        autoClose: 1000,
+      });
       // Add any additional logic after successful request
 
     } catch (error) {
@@ -127,6 +131,8 @@ const RagPickerCart = () => {
   const total = convenienceFee;
 
   return (
+    <>
+    <ToastContainer/>
     <div className="container mx-auto p-6">
       <form onSubmit={handleFormSubmit}>
         <div className="flex justify-between gap-8">
@@ -200,6 +206,7 @@ const RagPickerCart = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 
