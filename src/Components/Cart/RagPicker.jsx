@@ -123,6 +123,10 @@ const RagPickerCart = () => {
       // Add any additional logic after successful request
 
     } catch (error) {
+    toast.error("Something Went Wrong", {
+            position: "top-center",
+            autoClose: 1000,
+          });
       console.error('Error sending request:', error);
       // Handle errors as needed
     }

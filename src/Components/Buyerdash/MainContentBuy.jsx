@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {ToastContainer, toast } from 'react-toastify';
 
 const Card = ({ Name, Address, Accept, Reject, onRequestAccept }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
@@ -122,10 +123,17 @@ const MainContentBuy = ({ userData }) => {
         status: 'Appointed'
       });
 
-      console.log('Request accepted and status updated:', buyerResponse.data, requesterResponse.data);
+      toast.success("Status Updated", {
+        position: "top-center",
+        autoClose: 1000,
+      });
 
       // Optionally, update UI or state to reflect the change
     } catch (error) {
+      toast.error("Something Went Wrong", {
+        position: "top-center",
+        autoClose: 1000,
+      });
       console.error('Error accepting request:', error);
       // Handle error as needed
     }
@@ -136,6 +144,7 @@ const MainContentBuy = ({ userData }) => {
   }
 
   return (
+    <><ToastContainer/>
     <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
       <header className='text-2xl w-full m-3 '>
         <nav>
@@ -148,14 +157,17 @@ const MainContentBuy = ({ userData }) => {
         <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
           {userData.requests && userData.requests.length > 0 ? (
             userData.requests.map((request, index) => (
-              <Card
-                key={index}
-                Name={`Request from ${request.requesterEmail}`}
-                Address={`Location: ${request.additionalData}`}
-                Accept="Accept"
-                Reject="Reject"
-                onRequestAccept={() => handleAcceptRequest(request)}
-              />
+              request.status !== "Accepted" && (
+                <Card
+                  key={index}
+                  Name={`Request from ${request.requesterEmail}`}
+                  Address={`Location: ${request.additionalData}`}
+                  Accept="Accept"
+                  Reject="Reject"
+                  onRequestAccept={() => handleAcceptRequest(request)}
+                />
+              )
+             
             ))
           ) : (
             <p>No requests found</p>
@@ -163,6 +175,7 @@ const MainContentBuy = ({ userData }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
