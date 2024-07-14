@@ -63,7 +63,7 @@ const RagPickerCart = () => {
               lng: longitude
             },
             headers: {
-              'x-rapidapi-key': 'b25121b381msh09da0d56b03f926p114fc4jsnd0bb1e7aedc6',
+              'x-rapidapi-key': 'e9e1e74689msh3bfa54dbf4920c7p1b8e01jsnf61b4861cc30',
               'x-rapidapi-host': 'address-from-to-latitude-longitude.p.rapidapi.com'
             }
           };
@@ -97,14 +97,14 @@ const RagPickerCart = () => {
     
     // Prepare data to send
     const requestData = {
-      requesterEmail: data.email,
+      requesterEmail: localStorage.getItem("email"),
       requesterLocation: {
         type: "Point",
         coordinates: [lat, long]
       },
-      recipientEmail: localStorage.getItem("email"),
+      recipientEmail: email,
       scheduledTime: scheduledTime,
-      additionalData: "data"
+      additionalData: address
     };
 
     try {
