@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { format } from 'date-fns';
+
+
+import { format, parseISO } from 'date-fns';
 
 const formatDateTime = (isoString) => {
-  const date = new Date(isoString);
-  return format(date, 'PPpp'); // Formats date and time in a readable format
+  try {
+    const date = parseISO(isoString);
+    return format(date, 'PPpp'); // Formats date and time in a readable format
+  } catch (error) {
+    console.error('Error parsing date:', error);
+    return 'Invalid Date';
+  }
 };
+
 const Card = ({ Name, Address, scheduledTime, Accept, Reject, onRequestAccept, onRequestReject }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
     <div>
