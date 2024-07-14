@@ -64,7 +64,7 @@ const RagPickerCart = () => {
               lng: longitude
             },
             headers: {
-              'x-rapidapi-key': 'e9e1e74689msh3bfa54dbf4920c7p1b8e01jsnf61b4861cc30',
+              'x-rapidapi-key': localStorage.getItem("token-loc"),
               'x-rapidapi-host': 'address-from-to-latitude-longitude.p.rapidapi.com'
             }
           };

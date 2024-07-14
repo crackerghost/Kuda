@@ -75,7 +75,7 @@ const MainContentBuy = ({ userData }) => {
               lng: longitude
             },
             headers: {
-              'x-rapidapi-key': 'b25121b381msh09da0d56b03f926p114fc4jsnd0bb1e7aedc6',
+              'x-rapidapi-key': localStorage.getItem("token-loc"),
               'x-rapidapi-host': 'address-from-to-latitude-longitude.p.rapidapi.com'
             }
           };

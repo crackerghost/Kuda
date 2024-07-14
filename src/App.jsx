@@ -35,7 +35,7 @@ function App() {
       try {
         const response = await axios.get('https://kudaserver.vercel.app/map-token');
         const token = response.data.token;
-        localStorage.setItem("token",token)
+        localStorage.setItem("token-loc",token)
       } catch (error) {
         console.error('Error fetching map token:', error);
         // Handle error as needed
