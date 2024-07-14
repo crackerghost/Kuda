@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import ReactMapGL, { Marker } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import axios from 'axios';
 
 const RagPickerCart = () => {
   const { email } = useParams();
@@ -9,15 +8,8 @@ const RagPickerCart = () => {
   const [data, setData] = useState({});
   const [scheduledTime, setScheduledTime] = useState('');
   const [address, setAddress] = useState('');
-  const [viewport, setViewport] = useState({
-    width: '100%',
-    height: 400,
-    latitude: 41.8781,
-    longitude: -87.6298,
-    zoom: 9
-  });
-
-  const MAPBOX_TOKEN = 'pk.eyJ1IjoicmFqOTUyMzMiLCJhIjoiY2x3ZmswNWUwMHlsajJrcWVhZDl1ajIzNiJ9.dWRwxHmPuDYkC-cfLepNUA'; // Replace with your Mapbox token
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
 
   const fetchUserData = async () => {
     try {
@@ -51,6 +43,47 @@ const RagPickerCart = () => {
     fetchUserData();
   }, [email]);
 
+  useEffect(() => {
+    const fetchLocation = async () => {
+      if (lat === null || long === null) {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+
+          const { longitude, latitude } = position.coords;
+          setLong(longitude.toFixed(4));
+          setLat(latitude.toFixed(4));
+
+          const options = {
+            method: 'GET',
+            url: 'https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi',
+            params: {
+              lat: latitude,
+              lng: longitude
+            },
+            headers: {
+              'x-rapidapi-key': 'b25121b381msh09da0d56b03f926p114fc4jsnd0bb1e7aedc6',
+              'x-rapidapi-host': 'address-from-to-latitude-longitude.p.rapidapi.com'
+            }
+          };
+
+          const response = await axios.request(options);
+          console.log(response.data);
+          if (response.data.Results.length > 0) {
+            setAddress(response.data.Results[0].address);
+          } else {
+            console.error('No address found in response');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
+
+    fetchLocation();
+  }, [lat, long]);
+
   const handleScheduleChange = (e) => {
     setScheduledTime(e.target.value);
   };
@@ -75,10 +108,6 @@ const RagPickerCart = () => {
 
   const convenienceFee = 15;
   const total = convenienceFee;
-
-  const handleViewportChange = (viewport) => {
-    setViewport(viewport);
-  };
 
   return (
     <div className="container mx-auto p-6">
@@ -153,26 +182,6 @@ const RagPickerCart = () => {
           </div>
         </div>
       </form>
-
-      {/* Mapbox Map */}
-      <div className="mt-8">
-        <ReactMapGL
-          {...viewport}
-          mapboxAccessToken={MAPBOX_TOKEN}
-          onViewportChange={handleViewportChange}
-        >
-          {data && data.location && data.location.coordinates ? (
-            <Marker
-              latitude={data.location.coordinates[1]}
-              longitude={data.location.coordinates[0]}
-              offsetLeft={-20}
-              offsetTop={-10}
-            >
-              <div>You are here</div>
-            </Marker>
-          ) : null}
-        </ReactMapGL>
-      </div>
     </div>
   );
 };
