@@ -171,6 +171,7 @@ const MainContentBuy = ({ userData }) => {
   return (
     <>
       <ToastContainer />
+      <Outlet>
       <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
         <div className='flex h-auto'>
           <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
@@ -195,6 +196,7 @@ const MainContentBuy = ({ userData }) => {
           </div>
         </div>
       </div>
+      </Outlet>
     </>
   );
 };

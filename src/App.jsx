@@ -12,6 +12,8 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import RagPickerCart from "./Components/Cart/RagPicker";
 import BuyDash from "./Components/Buyerdash/Dashboard";
 import TawkTo from "./Components/TawkTo";
+import BuyerSection from "./Components/Buyerdash/BuyerSection";
+
 
 
 function App() {
@@ -103,6 +105,7 @@ function App() {
         <Route path="/home" element={<Dashboard />} />
         <Route path="/overview/:email" element={<RagPickerCart/>} />
         <Route path="/buyer" element={<BuyDash/>}/>
+        <Route path="/add-items" element={<BuyerSection/>}/>
       </Routes>
       <TawkTo/>
     </BrowserRouter>

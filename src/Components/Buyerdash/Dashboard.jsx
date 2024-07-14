@@ -47,10 +47,12 @@ const Dashboard = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
-
+  const handleSidebarClick = (path) => {
+    navigate(path);
+  };
   return (
     <div className="flex">
-      <LeftSidebar userData={userData} />
+      <LeftSidebar userData={userData} /> 
       <MainContentBuy userData={userData} />
     </div>
   );
