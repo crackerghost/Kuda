@@ -92,20 +92,37 @@ const RagPickerCart = () => {
     setAddress(e.target.value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission with the scheduled time and address
-    const orderDetails = {
-      email: data.email,
-      items: data.items,
+    
+    // Prepare data to send
+    const requestData = {
+      requesterEmail: data.email,
+      requesterLocation: {
+        type: "Point",
+        coordinates: [lat, long]
+      },
+      recipientEmail: localStorage.getItem("email"),
       scheduledTime: scheduledTime,
-      address: address,
-      convenienceFee: 15
+      additionalData: "data"
     };
-    console.log('Order Details:', orderDetails);
-    // Add your logic to handle order submission
-  };
 
+    try {
+      const response = await axios.post('https://kudaserver.vercel.app/sendRequest', requestData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      console.log('Request sent successfully:', response.data);
+      // Add any additional logic after successful request
+
+    } catch (error) {
+      console.error('Error sending request:', error);
+      // Handle errors as needed
+    }
+  };
   const convenienceFee = 15;
   const total = convenienceFee;
 
