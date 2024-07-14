@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
-const Card = ({ Name, Address, Accept, Reject, onRequestAccept }) => (
+const Card = ({ Name, Address, Accept, Reject, onRequestAccept, onRequestReject }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
     <div>
       <h3 className="text-3xl font-semibold">{Name}</h3>
@@ -15,7 +15,12 @@ const Card = ({ Name, Address, Accept, Reject, onRequestAccept }) => (
       >
         {Accept}
       </button>
-      <button className='text-xl text-white py-3 px-8 ml-5 rounded-full border-red-600 bg-red-600'>{Reject}</button>
+      <button
+        className='text-xl text-white py-3 px-8 ml-5 rounded-full border-red-600 bg-red-600'
+        onClick={onRequestReject}
+      >
+        {Reject}
+      </button>
     </div>
   </div>
 );
@@ -112,7 +117,6 @@ const MainContentBuy = ({ userData }) => {
         recipientEmail: request.requesterEmail,
         scheduledTime: request.scheduledTime,
         additionalData: request.additionalData
-
       });
 
       // Update status in requester's database
@@ -125,7 +129,7 @@ const MainContentBuy = ({ userData }) => {
 
       toast.success("Status Updated", {
         position: "top-center",
-        autoClose: 600,
+        autoClose: 1000,
         onClose: () => {
           window.location.reload();
         }
@@ -135,9 +139,38 @@ const MainContentBuy = ({ userData }) => {
     } catch (error) {
       toast.error("Something Went Wrong", {
         position: "top-center",
-        autoClose: 600,
+        autoClose: 1000,
       });
       console.error('Error accepting request:', error);
+      // Handle error as needed
+    }
+  };
+
+  const handleRejectRequest = async (request) => {
+    try {
+      // Update status in requester's database to rejected
+      const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
+        requesterEmail: request.requesterEmail,
+        recipientEmail: request.recipientEmail,
+        requestID: request._id,
+        status: 'Rejected'
+      });
+
+      toast.success("Request Rejected", {
+        position: "top-center",
+        autoClose: 500,
+        onClose: () => {
+          window.location.reload();
+        }
+      });
+
+      // Optionally, update UI or state to reflect the change
+    } catch (error) {
+      toast.error("Something Went Wrong", {
+        position: "top-center",
+        autoClose: 500,
+      });
+      console.error('Error rejecting request:', error);
       // Handle error as needed
     }
   };
@@ -147,37 +180,38 @@ const MainContentBuy = ({ userData }) => {
   }
 
   return (
-    <><ToastContainer/>
-    <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
-      <header className='text-2xl w-full m-3 '>
-        <nav>
-          <ul>
-            <a className='text-white hover:font-[500] hover:text-white hover:text-[--btnColor--] hover:underline border bg-[--btnColor--] px-6 py-2 rounded-xl'>Buy</a>
-          </ul>
-        </nav>
-      </header>
-      <div className='flex h-auto'>
-        <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
-          {userData.requests && userData.requests.length > 0 ? (
-            userData.requests.map((request, index) => (
-              request.status !== "Appointed" && (
-                <Card
-                  key={index}
-                  Name={`Request from ${request.requesterEmail}`}
-                  Address={`Location: ${request.additionalData}`}
-                  Accept="Accept"
-                  Reject="Reject"
-                  onRequestAccept={() => handleAcceptRequest(request)}
-                />
-              )
-             
-            ))
-          ) : (
-            <p>No requests found</p>
-          )}
+    <>
+      <ToastContainer />
+      <div className="flex-1 p-4 overflow-y-auto h-auto w-full">
+        <header className='text-2xl w-full m-3 '>
+          <nav>
+            <ul>
+              <a className='text-white hover:font-[500] hover:text-white hover:text-[--btnColor--] hover:underline border bg-[--btnColor--] px-6 py-2 rounded-xl'>Buy</a>
+            </ul>
+          </nav>
+        </header>
+        <div className='flex h-auto'>
+          <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
+            {userData.requests && userData.requests.length > 0 ? (
+              userData.requests.map((request, index) => (
+                request.status !== "Appointed" && request.status !== "Rejected" (
+                  <Card
+                    key={index}
+                    Name={`Request from ${request.requesterEmail}`}
+                    Address={`Location: ${request.additionalData}`}
+                    Accept="Accept"
+                    Reject="Reject"
+                    onRequestAccept={() => handleAcceptRequest(request)}
+                    onRequestReject={() => handleRejectRequest(request)}
+                  />
+                )
+              ))
+            ) : (
+              <p>No requests found</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 };
