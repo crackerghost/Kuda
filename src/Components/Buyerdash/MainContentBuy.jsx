@@ -117,6 +117,7 @@ const MainContentBuy = ({ userData }) => {
       // Update status in requester's database
       const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
         requesterEmail: request.requesterEmail,
+        recipientEmail: request.recipientEmail,
         requestID: request._id,
         status: 'Appointed'
       });
