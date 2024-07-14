@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 const LeftSidebar = ({ userData }) => {
   return (
@@ -17,7 +16,7 @@ const LeftSidebar = ({ userData }) => {
 
         <li className="mb-5">
           
-        <Link to="/buyer" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300">
+          <Link to="/home" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300">
             <span className="material-symbols-outlined mr-2">dashboard</span> Dashboard
           </Link>
           
@@ -25,8 +24,8 @@ const LeftSidebar = ({ userData }) => {
           
         <li className="mb-5">
           
-          <Link to="/requests">
-          <a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">payment</span>  My Requests</a>
+          <Link to="/approved-requests">
+          <a href="#" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300"><span className="material-symbols-outlined mr-2">payment</span>  Approve Requests</a>
           </Link>
         
           

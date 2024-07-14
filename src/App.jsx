@@ -13,6 +13,7 @@ import RagPickerCart from "./Components/Cart/RagPicker";
 import BuyDash from "./Components/Buyerdash/Dashboard";
 import TawkTo from "./Components/TawkTo";
 import BuyerSection from "./Components/Buyerdash/BuyerSection";
+import Approve from "./Components/Dashboard/Approve";
 
 function App() {
   const [loader, setLoader] = useState(true);
@@ -97,6 +98,7 @@ function AppContent() {
         <Route path="/overview/:email" element={<RagPickerCart />} />
         <Route path="/buyer" element={<BuyDash />} />
         <Route path="/add-items" element={<BuyerSection />} />
+        <Route path="/approved-requests" element={<Approve />} />
       </Routes>
       <TawkTo />
     </>

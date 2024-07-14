@@ -45,7 +45,9 @@ const Dashboard = () => {
   }, [userData, navigate]);
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return  <div className="loader">
+    <img src="/assets/Landingpage/loading.gif" alt="Loading..." />
+  </div>
   }
   const handleSidebarClick = (path) => {
     navigate(path);

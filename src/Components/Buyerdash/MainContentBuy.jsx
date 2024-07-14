@@ -1,40 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { format, parseISO } from 'date-fns';
-
-const formatDateTime = (isoString) => {
-  try {
-    const date = parseISO(isoString);
-    return format(date, 'PPpp'); // Formats date and time in a readable format
-  } catch (error) {
-    console.error('Error parsing date:', error);
-    return 'Invalid Date';
-  }
-};
-
-const Card = ({ Name, Address, scheduledTime, Accept, Reject, onRequestAccept, onRequestReject }) => (
+const Card = ({ Name, Address, scheduledTime, Accept, Reject, status, onRequestAccept, onRequestReject }) => (
   <div className="bg-white p-4 rounded-2xl flex flex-col shadow-md mb-2">
     <div>
       <h3 className="text-3xl font-semibold">{Name}</h3>
       <p className="text-2xl text-blue-500 mt-2">{Address}</p>
-      <p className="text-2xl text-blue-500 mt-2">Scheduled At : {formatDateTime(scheduledTime)}</p>
+      <p className="text-2xl text-blue-500 mt-2">Scheduled At : {new Date(scheduledTime).toLocaleString()}</p>
+      <p className={`text-2xl mt-2 ${status === 'Appointed' ? 'text-green-500' : 'text-gray-500'}`}>{status}</p>
     </div>
-    <div>
-      <button
-        className='text-xl text-white py-3 px-7 mt-3 rounded-full border-green-500 bg-green-500'
-        onClick={onRequestAccept}
-      >
-        {Accept}
-      </button>
-      <button
-        className='text-xl text-white py-3 px-8 ml-5 rounded-full border-red-600 bg-red-600'
-        onClick={onRequestReject}
-      >
-        {Reject}
-      </button>
-    </div>
+    {status !== 'Appointed' && status !== 'Rejected' && (
+      <div>
+        <button
+          className='text-xl text-white py-3 px-7 mt-3 rounded-full border-green-500 bg-green-500'
+          onClick={onRequestAccept}
+        >
+          {Accept}
+        </button>
+        <button
+          className='text-xl text-white py-3 px-8 ml-5 rounded-full border-red-600 bg-red-600'
+          onClick={onRequestReject}
+        >
+          {Reject}
+        </button>
+      </div>
+    )}
   </div>
 );
 
@@ -85,6 +77,7 @@ const MainContentBuy = ({ userData }) => {
 
     fetchLocation();
   }, [lat, long]);
+
   const handleAcceptRequest = async (request) => {
     toast.success("Please Wait..", {
       position: "top-center",
@@ -98,18 +91,18 @@ const MainContentBuy = ({ userData }) => {
         scheduledTime: request.scheduledTime,
         additionalData: request.additionalData
       });
-  
-      console.log('Buyer response:', response.data); // Log response for debugging
-  
+
+      console.log('Buyer response:', response.data);
+
       const requesterResponse = await axios.post('https://kudaserver.vercel.app/updateRequestStatus', {
         requesterEmail: request.requesterEmail,
         recipientEmail: request.recipientEmail,
         requestID: request._id,
         status: 'Appointed'
       });
-  
-      console.log('Requester response:', requesterResponse.data); // Log response for debugging
-  
+
+      console.log('Requester response:', requesterResponse.data);
+
       toast.success("Status Updated", {
         position: "top-center",
         autoClose: 1000,
@@ -118,7 +111,7 @@ const MainContentBuy = ({ userData }) => {
           setRequests(updatedRequests);
         }
       });
-  
+
     } catch (error) {
       toast.error("Something Went Wrong", {
         position: "top-center",
@@ -127,7 +120,7 @@ const MainContentBuy = ({ userData }) => {
       console.error('Error accepting request:', error);
     }
   };
-  
+
   const handleRejectRequest = async (request) => {
     toast.success("Please Wait..", {
       position: "top-center",
@@ -140,9 +133,9 @@ const MainContentBuy = ({ userData }) => {
         requestID: request._id,
         status: 'Rejected'
       });
-  
-      console.log('Requester response:', requesterResponse.data); // Log response for debugging
-  
+
+      console.log('Requester response:', requesterResponse.data);
+
       toast.success("Request Rejected", {
         position: "top-center",
         autoClose: 500,
@@ -151,7 +144,7 @@ const MainContentBuy = ({ userData }) => {
           setRequests(updatedRequests);
         }
       });
-  
+
     } catch (error) {
       toast.error("Something Went Wrong", {
         position: "top-center",
@@ -160,9 +153,6 @@ const MainContentBuy = ({ userData }) => {
       console.error('Error rejecting request:', error);
     }
   };
-  
-
- 
 
   if (!cityName) {
     return null; // or loading indicator, depending on your UI needs
@@ -175,27 +165,33 @@ const MainContentBuy = ({ userData }) => {
         <div className='flex h-auto'>
           <div className="flex-1 gap-4 mt-4 ml-6 h-1/4 w-2/3 ">
             {requests && requests.length > 0 ? (
-              requests.map((request, index) => (
-                request.status !== "Appointed" && request.status !== "Rejected" && (
-                  <Card
-                    key={index}
-                    Name={`Request from ${request.requesterEmail}`}
-                    Address={`Location: ${request.additionalData}`}
-                    scheduledTime={`${request.scheduledTime}`}
-                    Accept="Accept"
-                    Reject="Reject"
-                    onRequestAccept={() => handleAcceptRequest(request)}
-                    onRequestReject={() => handleRejectRequest(request)}
-                  />
-                )
-              ))
+              <>
+                {requests.some(request => request.status === "Appointed" || request.status === "Rejected") ? (
+                  requests.map((request, index) => (
+                    request.status !== "Appointed" && request.status !== "Rejected" ? (
+                      <Card
+                        key={index}
+                        Name={`Request from ${request.requesterEmail}`}
+                        Address={`Location: ${request.additionalData}`}
+                        scheduledTime={`${request.scheduledTime}`}
+                        Accept="Accept"
+                        Reject="Reject"
+                        status={request.status}
+                        onRequestAccept={() => handleAcceptRequest(request)}
+                        onRequestReject={() => handleRejectRequest(request)}
+                      />
+                    ) : null
+                  ))
+                ) : (
+                  <img src='/assets/New folder/empty.gif' alt='No requests' />
+                )}
+              </>
             ) : (
-              <p>No requests found</p>
+              <img src='/assets/New folder/empty.gif' alt='No requests' />
             )}
           </div>
         </div>
       </div>
-      
     </>
   );
 };

@@ -21,11 +21,7 @@ const LeftSidebar = ({ userData }) => {
             <span className="material-symbols-outlined mr-2">dashboard</span> Dashboard
           </Link>
         </li>
-        <li className="mb-5">
-          <Link to="/inbox" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300">
-            <span className="material-symbols-outlined mr-2">sms</span> Inbox
-          </Link>
-        </li>
+      
         <li className="mb-5">
           <Link to="/add-items" className="flex items-center p-2 rounded hover:border hover:border-black hover:bg-black transition duration-300">
             <span className="material-symbols-outlined mr-2">settings</span> Add Items
